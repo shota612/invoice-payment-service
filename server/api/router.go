@@ -10,6 +10,7 @@ func SetupRouter(invoiceController *controllers.InvoiceController) *gin.Engine {
 	api := router.Group("/api")
 	{
 		api.POST("/invoices", invoiceController.CreateInvoice)
+		api.GET("/invoices", invoiceController.GetInvoicesByDateRange)
 	}
 	return router
 }
