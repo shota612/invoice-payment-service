@@ -49,7 +49,8 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, invoice)
+	response := adapter.NewInvoiceResponse(*invoice)
+	c.JSON(http.StatusOK, response)
 }
 
 func (ctrl *InvoiceController) GetInvoicesByDateRange(c *gin.Context) {
