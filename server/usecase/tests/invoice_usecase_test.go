@@ -18,6 +18,11 @@ func (m *MockInvoiceRepository) CreateInvoice(invoice *models.Invoice) (*models.
 	return args.Get(0).(*models.Invoice), args.Error(1)
 }
 
+func (m *MockInvoiceRepository) GetInvoicesByDateRange(startDate, endDate string) ([]models.Invoice, error) {
+	args := m.Called(startDate, endDate)
+	return args.Get(0).([]models.Invoice), args.Error(1)
+}
+
 func TestCreateInvoice(t *testing.T) {
 	mockRepo := new(MockInvoiceRepository)
 	invoiceUsecase := usecase.NewInvoiceUsecase(mockRepo)
@@ -48,5 +53,35 @@ func TestCreateInvoice(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, invoice, createdInvoice)
+	mockRepo.AssertExpectations(t)
+}
+
+func TestGetInvoicesByDateRange(t *testing.T) {
+	mockRepo := new(MockInvoiceRepository)
+	invoiceUsecase := usecase.NewInvoiceUsecase(mockRepo)
+
+	invoice1 := models.NewInvoice(
+		"2024-07-23",
+		10000,
+		0.04,
+		0.10,
+		"2024-08-23",
+		models.Pending,
+		1,
+		1,
+	)
+
+	invoices := []models.Invoice{*invoice1}
+
+	mockRepo.On("GetInvoicesByDateRange", "2024-07-01", "2024-07-31").Return(invoices, nil)
+
+	startDate := "2024-07-01"
+	endDate := "2024-07-31"
+
+	retrievedInvoices, err := invoiceUsecase.GetInvoicesByDateRange(startDate, endDate)
+
+	assert.Nil(t, err)
+	assert.Equal(t, 1, len(retrievedInvoices))
+	assert.Equal(t, invoice1.ID, retrievedInvoices[0].ID)
 	mockRepo.AssertExpectations(t)
 }
