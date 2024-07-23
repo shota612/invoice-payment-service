@@ -13,11 +13,11 @@ type Invoice struct {
 	ID             uint          `gorm:"primaryKey"`
 	IssueDate      string        `gorm:"not null"`
 	PaymentAmount  float64       `gorm:"not null"`
-	Fee            float64       `gorm:"-"`
+	Fee            float64       `gorm:"not null"`
 	FeeRate        float64       `gorm:"not null"`
-	SalesTax       float64       `gorm:"-"`
+	SalesTax       float64       `gorm:"not null"`
 	SalesTaxRate   float64       `gorm:"not null"`
-	InvoiceAmount  float64       `gorm:"-"`
+	InvoiceAmount  float64       `gorm:"not null"`
 	PaymentDueDate string        `gorm:"not null"`
 	Status         InvoiceStatus `gorm:"not null"`
 	CompanyID      uint          `gorm:"not null"`
