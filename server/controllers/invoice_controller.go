@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/shota612/invoice-payment-service/server/controllers/adapter"
 	"github.com/shota612/invoice-payment-service/server/models"
 	"github.com/shota612/invoice-payment-service/server/usecase"
 	"net/http"
@@ -49,4 +50,22 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, invoice)
+}
+
+func (ctrl *InvoiceController) GetInvoicesByDateRange(c *gin.Context) {
+	startDate := c.Query("start_date")
+	endDate := c.Query("end_date")
+
+	if startDate == "" || endDate == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Start date and end date are required"})
+		return
+	}
+
+	invoices, err := ctrl.invoiceUsecase.GetInvoicesByDateRange(startDate, endDate)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	response := adapter.NewInvoiceResponses(invoices)
+	c.JSON(http.StatusOK, response)
 }
