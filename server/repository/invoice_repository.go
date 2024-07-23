@@ -19,12 +19,16 @@ func NewInvoiceRepository(db *gorm.DB) InvoiceRepository {
 }
 
 func (r *invoiceRepository) CreateInvoice(invoice *models.Invoice) (*models.Invoice, error) {
-	err := r.db.Create(invoice).Error
-	return invoice, err
+	if err := r.db.Create(invoice).Error; err != nil {
+		return nil, err
+	}
+	return invoice, nil
 }
 
 func (r *invoiceRepository) GetInvoicesByDateRange(startDate, endDate string) ([]models.Invoice, error) {
 	var invoices []models.Invoice
-	err := r.db.Where("payment_due_date BETWEEN ? AND ?", startDate, endDate).Find(&invoices).Error
-	return invoices, err
+	if err := r.db.Where("payment_due_date BETWEEN ? AND ?", startDate, endDate).Find(&invoices).Error; err != nil {
+		return nil, err
+	}
+	return invoices, nil
 }
