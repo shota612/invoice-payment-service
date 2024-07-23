@@ -25,8 +25,6 @@ func TestCreateInvoice(t *testing.T) {
 	invoice := models.NewInvoice(
 		"2024-07-23",
 		10000,
-		0.04,
-		0.10,
 		"2024-08-23",
 		models.Pending,
 		1,
@@ -56,8 +54,6 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	invoice1 := models.NewInvoice(
 		"2024-07-23",
 		10000,
-		0.04,
-		0.10,
 		"2024-07-31",
 		models.Pending,
 		1,
@@ -66,8 +62,6 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	invoice2 := models.NewInvoice(
 		"2024-08-01",
 		20000,
-		0.04,
-		0.10,
 		"2024-09-01",
 		models.Pending,
 		1,

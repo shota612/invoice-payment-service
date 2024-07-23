@@ -3,6 +3,11 @@ package models
 type InvoiceStatus string
 
 const (
+	DefaultFeeRate      = 0.04
+	DefaultSalesTaxRate = 0.10
+)
+
+const (
 	Pending    InvoiceStatus = "Pending"
 	Processing InvoiceStatus = "Processing"
 	Paid       InvoiceStatus = "Paid"
@@ -26,12 +31,12 @@ type Invoice struct {
 	Client         Client        `gorm:"foreignKey:ClientID"`
 }
 
-func NewInvoice(issueDate string, paymentAmount, feeRate, salesTaxRate float64, paymentDueDate string, status InvoiceStatus, companyID, clientID uint) *Invoice {
+func NewInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status InvoiceStatus, companyID, clientID uint) *Invoice {
 	invoice := &Invoice{
 		IssueDate:      issueDate,
 		PaymentAmount:  paymentAmount,
-		FeeRate:        feeRate,
-		SalesTaxRate:   salesTaxRate,
+		FeeRate:        DefaultFeeRate,
+		SalesTaxRate:   DefaultSalesTaxRate,
 		PaymentDueDate: paymentDueDate,
 		Status:         status,
 		CompanyID:      companyID,

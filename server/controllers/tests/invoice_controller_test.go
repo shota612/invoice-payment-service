@@ -19,8 +19,8 @@ type MockInvoiceUsecase struct {
 	mock.Mock
 }
 
-func (m *MockInvoiceUsecase) CreateInvoice(issueDate string, paymentAmount, feeRate, salesTaxRate float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error) {
-	args := m.Called(issueDate, paymentAmount, feeRate, salesTaxRate, paymentDueDate, status, companyID, clientID)
+func (m *MockInvoiceUsecase) CreateInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error) {
+	args := m.Called(issueDate, paymentAmount, paymentDueDate, status, companyID, clientID)
 	return args.Get(0).(*models.Invoice), args.Error(1)
 }
 
@@ -40,22 +40,18 @@ func TestCreateInvoice(t *testing.T) {
 	invoice := models.NewInvoice(
 		"2024-07-23",
 		10000,
-		0.04,
-		0.10,
 		"2024-08-23",
 		models.Pending,
 		1,
 		1,
 	)
 
-	mockUsecase.On("CreateInvoice", invoice.IssueDate, invoice.PaymentAmount, invoice.FeeRate, invoice.SalesTaxRate, invoice.PaymentDueDate, invoice.Status, invoice.CompanyID, invoice.ClientID).Return(invoice, nil)
+	mockUsecase.On("CreateInvoice", invoice.IssueDate, invoice.PaymentAmount, invoice.PaymentDueDate, invoice.Status, invoice.CompanyID, invoice.ClientID).Return(invoice, nil)
 
 	w := httptest.NewRecorder()
 	reqBody := `{
 		"issue_date": "2024-07-23",
 		"payment_amount": 10000,
-		"fee_rate": 0.04,
-		"sales_tax_rate": 0.10,
 		"payment_due_date": "2024-08-23",
 		"status": "Pending",
 		"company_id": 1,
@@ -95,8 +91,6 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	invoice := models.NewInvoice(
 		"2024-07-23",
 		10000,
-		0.04,
-		0.10,
 		"2024-08-23",
 		models.Pending,
 		1,

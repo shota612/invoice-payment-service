@@ -21,8 +21,6 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 	var request struct {
 		IssueDate      string               `json:"issue_date" binding:"required"`
 		PaymentAmount  float64              `json:"payment_amount" binding:"required"`
-		FeeRate        float64              `json:"fee_rate" binding:"required"`
-		SalesTaxRate   float64              `json:"sales_tax_rate" binding:"required"`
 		PaymentDueDate string               `json:"payment_due_date" binding:"required"`
 		Status         models.InvoiceStatus `json:"status" binding:"required"`
 		CompanyID      uint                 `json:"company_id" binding:"required"`
@@ -37,8 +35,6 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 	invoice, err := ctrl.invoiceUsecase.CreateInvoice(
 		request.IssueDate,
 		request.PaymentAmount,
-		request.FeeRate,
-		request.SalesTaxRate,
 		request.PaymentDueDate,
 		request.Status,
 		request.CompanyID,
@@ -57,6 +53,7 @@ func (ctrl *InvoiceController) GetInvoicesByDateRange(c *gin.Context) {
 	startDate := c.Query("start_date")
 	endDate := c.Query("end_date")
 
+	// TODO: Validate date format
 	if startDate == "" || endDate == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Start date and end date are required"})
 		return

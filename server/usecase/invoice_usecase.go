@@ -6,7 +6,7 @@ import (
 )
 
 type InvoiceUsecase interface {
-	CreateInvoice(issueDate string, paymentAmount, feeRate, salesTaxRate float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error)
+	CreateInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error)
 	GetInvoicesByDateRange(startDate, endDate string) ([]models.Invoice, error)
 }
 
@@ -18,8 +18,8 @@ func NewInvoiceUsecase(repo repository.InvoiceRepository) InvoiceUsecase {
 	return &invoiceUsecase{repo}
 }
 
-func (u *invoiceUsecase) CreateInvoice(issueDate string, paymentAmount, feeRate, salesTaxRate float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error) {
-	invoice := models.NewInvoice(issueDate, paymentAmount, feeRate, salesTaxRate, paymentDueDate, status, companyID, clientID)
+func (u *invoiceUsecase) CreateInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error) {
+	invoice := models.NewInvoice(issueDate, paymentAmount, paymentDueDate, status, companyID, clientID)
 	return u.invoiceRepo.CreateInvoice(invoice)
 }
 
