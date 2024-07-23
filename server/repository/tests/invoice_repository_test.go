@@ -48,3 +48,46 @@ func TestCreateInvoice(t *testing.T) {
 	assert.Equal(t, invoice.SalesTax, fetchedInvoice.SalesTax)
 	assert.Equal(t, invoice.InvoiceAmount, fetchedInvoice.InvoiceAmount)
 }
+
+func TestGetInvoicesByDateRange(t *testing.T) {
+	db := setupTestDB()
+	repo := repository.NewInvoiceRepository(db)
+
+	invoice1 := models.NewInvoice(
+		"2024-07-23",
+		10000,
+		0.04,
+		0.10,
+		"2024-07-31",
+		models.Pending,
+		1,
+		1,
+	)
+	invoice2 := models.NewInvoice(
+		"2024-08-01",
+		20000,
+		0.04,
+		0.10,
+		"2024-09-01",
+		models.Pending,
+		1,
+		1,
+	)
+
+	_, err := repo.CreateInvoice(invoice1)
+	if err != nil {
+		return
+	}
+	_, err = repo.CreateInvoice(invoice2)
+	if err != nil {
+		return
+	}
+
+	startDate := "2024-07-01"
+	endDate := "2024-07-31"
+
+	invoices, err := repo.GetInvoicesByDateRange(startDate, endDate)
+	assert.Nil(t, err)
+	assert.Equal(t, 1, len(invoices))
+	assert.Equal(t, invoice1.IssueDate, invoices[0].IssueDate)
+}
