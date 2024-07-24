@@ -132,3 +132,5 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 
 	assert.Equal(t, expectedInvoice, retrievedInvoices[0])
 }
+
+// TODO: Add abnormally test cases like error cases

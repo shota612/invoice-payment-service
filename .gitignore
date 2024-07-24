@@ -6,4 +6,10 @@
 *.iml
 out
 gen
+
+# Local DB
 test.db
+
+
+# Coverage
+coverage.out

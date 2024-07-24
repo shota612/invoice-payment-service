@@ -85,3 +85,5 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	assert.Equal(t, 1, len(invoices))
 	assert.Equal(t, invoice1.IssueDate, invoices[0].IssueDate)
 }
+
+// TODO: Add abnormally test cases like error cases
