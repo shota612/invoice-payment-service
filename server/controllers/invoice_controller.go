@@ -18,6 +18,7 @@ func NewInvoiceController(u usecase.InvoiceUsecase) *InvoiceController {
 
 func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 
+	// TODO: Add Authorization
 	var request struct {
 		IssueDate      string               `json:"issue_date" binding:"required"`
 		PaymentAmount  float64              `json:"payment_amount" binding:"required"`
@@ -50,6 +51,8 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 }
 
 func (ctrl *InvoiceController) GetInvoicesByDateRange(c *gin.Context) {
+	// TODO: Add Authorization
+
 	startDate := c.Query("start_date")
 	endDate := c.Query("end_date")
 

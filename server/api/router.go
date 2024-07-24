@@ -7,6 +7,10 @@ import (
 
 func SetupRouter(invoiceController *controllers.InvoiceController) *gin.Engine {
 	router := gin.Default()
+
+	// TODO: Add Authentication Middleware
+	//	router.Use(middleware.AuthMiddleware())
+
 	api := router.Group("/api")
 	{
 		api.POST("/invoices", invoiceController.CreateInvoice)
