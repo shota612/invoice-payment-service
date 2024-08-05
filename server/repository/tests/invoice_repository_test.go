@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/shota612/invoice-payment-service/server/repository"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
@@ -11,7 +11,7 @@ import (
 
 func setupTestDB() *gorm.DB {
 	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	err := db.AutoMigrate(&models.Company{}, &models.User{}, &models.Client{}, &models.ClientBankAccount{}, &models.Invoice{})
+	err := db.AutoMigrate(&domain.Company{}, &domain.User{}, &domain.Client{}, &domain.ClientBankAccount{}, &domain.Invoice{})
 	if err != nil {
 		return nil
 	}
@@ -22,11 +22,11 @@ func TestCreateInvoice(t *testing.T) {
 	db := setupTestDB()
 	repo := repository.NewInvoiceRepository(db)
 
-	invoice := models.NewInvoice(
+	invoice := domain.NewInvoice(
 		"2024-07-23",
 		10000,
 		"2024-08-23",
-		models.Pending,
+		domain.Pending,
 		1,
 		1,
 	)
@@ -38,7 +38,7 @@ func TestCreateInvoice(t *testing.T) {
 	assert.Equal(t, invoice.SalesTax, createdInvoice.SalesTax)
 	assert.Equal(t, invoice.InvoiceAmount, createdInvoice.InvoiceAmount)
 
-	var fetchedInvoice models.Invoice
+	var fetchedInvoice domain.Invoice
 	db.First(&fetchedInvoice, invoice.ID)
 
 	assert.Equal(t, invoice.PaymentAmount, fetchedInvoice.PaymentAmount)
@@ -51,19 +51,19 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	db := setupTestDB()
 	repo := repository.NewInvoiceRepository(db)
 
-	invoice1 := models.NewInvoice(
+	invoice1 := domain.NewInvoice(
 		"2024-07-23",
 		10000,
 		"2024-07-31",
-		models.Pending,
+		domain.Pending,
 		1,
 		1,
 	)
-	invoice2 := models.NewInvoice(
+	invoice2 := domain.NewInvoice(
 		"2024-08-01",
 		20000,
 		"2024-09-01",
-		models.Pending,
+		domain.Pending,
 		1,
 		1,
 	)

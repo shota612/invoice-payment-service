@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shota612/invoice-payment-service/server/controllers"
 	"github.com/shota612/invoice-payment-service/server/controllers/adapter"
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -19,14 +19,14 @@ type MockInvoiceUsecase struct {
 	mock.Mock
 }
 
-func (m *MockInvoiceUsecase) CreateInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status models.InvoiceStatus, companyID, clientID uint) (*models.Invoice, error) {
+func (m *MockInvoiceUsecase) CreateInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status domain.InvoiceStatus, companyID, clientID uint) (*domain.Invoice, error) {
 	args := m.Called(issueDate, paymentAmount, paymentDueDate, status, companyID, clientID)
-	return args.Get(0).(*models.Invoice), args.Error(1)
+	return args.Get(0).(*domain.Invoice), args.Error(1)
 }
 
-func (m *MockInvoiceUsecase) GetInvoicesByDateRange(startDate, endDate string) ([]models.Invoice, error) {
+func (m *MockInvoiceUsecase) GetInvoicesByDateRange(startDate, endDate string) ([]domain.Invoice, error) {
 	args := m.Called(startDate, endDate)
-	return args.Get(0).([]models.Invoice), args.Error(1)
+	return args.Get(0).([]domain.Invoice), args.Error(1)
 }
 
 func TestCreateInvoice(t *testing.T) {
@@ -37,11 +37,11 @@ func TestCreateInvoice(t *testing.T) {
 	router := gin.Default()
 	router.POST("/api/invoices", controller.CreateInvoice)
 
-	invoice := models.NewInvoice(
+	invoice := domain.NewInvoice(
 		"2024-07-23",
 		10000,
 		"2024-08-23",
-		models.Pending,
+		domain.Pending,
 		1,
 		1,
 	)
@@ -88,16 +88,16 @@ func TestGetInvoicesByDateRange(t *testing.T) {
 	router := gin.Default()
 	router.GET("/api/invoices", controller.GetInvoicesByDateRange)
 
-	invoice := models.NewInvoice(
+	invoice := domain.NewInvoice(
 		"2024-07-23",
 		10000,
 		"2024-08-23",
-		models.Pending,
+		domain.Pending,
 		1,
 		1,
 	)
 
-	invoices := []models.Invoice{*invoice}
+	invoices := []domain.Invoice{*invoice}
 
 	mockUsecase.On("GetInvoicesByDateRange", "2024-07-01", "2024-07-31").Return(invoices, nil)
 

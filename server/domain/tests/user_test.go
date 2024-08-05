@@ -1,13 +1,13 @@
 package tests
 
 import (
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestUserModel(t *testing.T) {
-	user := models.User{
+	user := domain.User{
 		Name:      "Test User",
 		Email:     "test@example.com",
 		Password:  "securepassword",

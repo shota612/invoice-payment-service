@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/shota612/invoice-payment-service/server/controllers/adapter"
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/shota612/invoice-payment-service/server/usecase"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func (ctrl *InvoiceController) CreateInvoice(c *gin.Context) {
 		IssueDate      string               `json:"issue_date" binding:"required"`
 		PaymentAmount  float64              `json:"payment_amount" binding:"required"`
 		PaymentDueDate string               `json:"payment_due_date" binding:"required"`
-		Status         models.InvoiceStatus `json:"status" binding:"required"`
+		Status         domain.InvoiceStatus `json:"status" binding:"required"`
 		CompanyID      uint                 `json:"company_id" binding:"required"`
 		ClientID       uint                 `json:"client_id" binding:"required"`
 	}

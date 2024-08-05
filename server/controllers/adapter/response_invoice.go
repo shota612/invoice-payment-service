@@ -1,6 +1,6 @@
 package adapter
 
-import "github.com/shota612/invoice-payment-service/server/models"
+import "github.com/shota612/invoice-payment-service/server/domain"
 
 type InvoiceResponse struct {
 	ID             uint                 `json:"id"`
@@ -12,12 +12,12 @@ type InvoiceResponse struct {
 	SalesTaxRate   float64              `json:"sales_tax_rate"`
 	InvoiceAmount  float64              `json:"invoice_amount"`
 	PaymentDueDate string               `json:"payment_due_date"`
-	Status         models.InvoiceStatus `json:"status"`
+	Status         domain.InvoiceStatus `json:"status"`
 	CompanyID      uint                 `json:"company_id"`
 	ClientID       uint                 `json:"client_id"`
 }
 
-func NewInvoiceResponse(invoice models.Invoice) InvoiceResponse {
+func NewInvoiceResponse(invoice domain.Invoice) InvoiceResponse {
 	return InvoiceResponse{
 		ID:             invoice.ID,
 		IssueDate:      invoice.IssueDate,
@@ -34,7 +34,7 @@ func NewInvoiceResponse(invoice models.Invoice) InvoiceResponse {
 	}
 }
 
-func NewInvoiceResponses(invoices []models.Invoice) []InvoiceResponse {
+func NewInvoiceResponses(invoices []domain.Invoice) []InvoiceResponse {
 	responses := make([]InvoiceResponse, len(invoices))
 	for i, invoice := range invoices {
 		responses[i] = NewInvoiceResponse(invoice)

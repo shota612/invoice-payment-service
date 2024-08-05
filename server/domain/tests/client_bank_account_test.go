@@ -1,13 +1,13 @@
 package tests
 
 import (
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestClientBankAccountModel(t *testing.T) {
-	account := models.ClientBankAccount{
+	account := domain.ClientBankAccount{
 		ClientID:      1,
 		BankName:      "Test Bank",
 		BranchName:    "Test Branch",

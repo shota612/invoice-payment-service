@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/shota612/invoice-payment-service/server/api"
 	"github.com/shota612/invoice-payment-service/server/controllers"
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/shota612/invoice-payment-service/server/repository"
 	"github.com/shota612/invoice-payment-service/server/usecase"
 	"gorm.io/driver/sqlite"
@@ -16,7 +16,7 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	err = db.AutoMigrate(&models.Company{}, &models.User{}, &models.Client{}, &models.ClientBankAccount{}, &models.Invoice{})
+	err = db.AutoMigrate(&domain.Company{}, &domain.User{}, &domain.Client{}, &domain.ClientBankAccount{}, &domain.Invoice{})
 	if err != nil {
 		return
 	}

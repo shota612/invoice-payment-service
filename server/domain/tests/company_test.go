@@ -1,13 +1,13 @@
 package tests
 
 import (
-	"github.com/shota612/invoice-payment-service/server/models"
+	"github.com/shota612/invoice-payment-service/server/domain"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestCompanyModel(t *testing.T) {
-	company := models.Company{
+	company := domain.Company{
 		LegalName:      "Test Company",
 		Representative: "John Doe",
 		PhoneNumber:    "123456789",

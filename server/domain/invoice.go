@@ -1,4 +1,4 @@
-package models
+package domain
 
 type InvoiceStatus string
 
@@ -15,20 +15,18 @@ const (
 )
 
 type Invoice struct {
-	ID             uint          `gorm:"primaryKey"`
-	IssueDate      string        `gorm:"not null"`
-	PaymentAmount  float64       `gorm:"not null"`
-	Fee            float64       `gorm:"not null"`
-	FeeRate        float64       `gorm:"not null"`
-	SalesTax       float64       `gorm:"not null"`
-	SalesTaxRate   float64       `gorm:"not null"`
-	InvoiceAmount  float64       `gorm:"not null"`
-	PaymentDueDate string        `gorm:"not null"`
-	Status         InvoiceStatus `gorm:"not null"`
-	CompanyID      uint          `gorm:"not null"`
-	Company        Company       `gorm:"foreignKey:CompanyID"`
-	ClientID       uint          `gorm:"not null"`
-	Client         Client        `gorm:"foreignKey:ClientID"`
+	ID             uint
+	IssueDate      string
+	PaymentAmount  float64
+	Fee            float64
+	FeeRate        float64
+	SalesTax       float64
+	SalesTaxRate   float64
+	InvoiceAmount  float64
+	PaymentDueDate string
+	Status         InvoiceStatus
+	CompanyID      uint
+	ClientID       uint
 }
 
 func NewInvoice(issueDate string, paymentAmount float64, paymentDueDate string, status InvoiceStatus, companyID, clientID uint) *Invoice {
